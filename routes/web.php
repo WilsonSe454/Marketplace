@@ -12,5 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $helloWorld = 'Hello World';
+
+    // return view('welcome', ['helloWorld' => $helloWorld]);
+    /* return view('welcome', [
+        'helloWorld' => $helloWorld,
+        'teste' => 'testando'
+    ]); */ // vc pode passar várias chaves 
+    // return view('welcome', compact('helloWorld'));// O compact cria um array associativo com a chave passada como argumento.
+    // return view('welcome');
 });
