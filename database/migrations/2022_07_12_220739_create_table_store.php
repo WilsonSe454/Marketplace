@@ -36,6 +36,6 @@ class CreateTableStore extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_store');
+        Schema::dropIfExists('stores');
     }
 }
