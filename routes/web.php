@@ -10,15 +10,26 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Product;
 
 Route::get('/', function () {
     $helloWorld = 'Hello World';
 
-    // return view('welcome', ['helloWorld' => $helloWorld]);
-    /* return view('welcome', [
+    // return view('welcome', ['helloWorld' => $helloWorld]);// eturn view('nome da view', ['chave' => $variável]);
+
+    // vc pode passar várias chaves 
+    return view('welcome', [
         'helloWorld' => $helloWorld,
         'teste' => 'testando'
-    ]); */ // vc pode passar várias chaves 
-    // return view('welcome', compact('helloWorld'));// O compact cria um array associativo com a chave passada como argumento.
+    ]); 
+
+    /* // O compact cria um array associativo com a chave passada como argumento.
+    return view('welcome', compact('helloWorld')); */
     // return view('welcome');
+});
+
+Route::get('/model', function () {
+    $products = Product::all(); //select * from products
+    
+    return $products;
 });
