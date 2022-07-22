@@ -11,6 +11,7 @@
 |
 */
 use App\Product;
+use App\User;
 
 Route::get('/', function () {
     $helloWorld = 'Hello World';
@@ -29,7 +30,32 @@ Route::get('/', function () {
 });
 
 Route::get('/model', function () {
-    $products = Product::all(); //select * from products
+    /* $products = Product::all(); //select * from products
+    return $products; */
     
-    return $products;
+    
+    // Usando o Active Record
+    
+
+    //Inserindo dados
+    /* 
+    $user = new User;
+    $user->name = 'Wilson';
+    $user->email = 'wilson@teste.com.br';
+    $user->password = bcrypt('123456789');
+    $user->save();
+    return $user->all(); 
+    */
+
+
+    //atualizando dados
+    $user = User::find(1);//select * from usuario where id = ?
+    $user->name = 'Wilson Editado';
+    $user->email = 'wilson@teste.com.br';
+    $user->password = bcrypt('123456789');
+    $user->save();
+    return $user->all();
+    
+
+
 });
