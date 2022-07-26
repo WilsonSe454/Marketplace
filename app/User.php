@@ -36,4 +36,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // 1:1 - Um pra um (Usuario e Loja) | hasOne e belongsTo
+    // 1:N - Um pra Muitos (Loja e Produtos) | hasMany e belongsTo 
+    // N:N - Muitos pra Muitos (Produtos e Categorias) | belongsToMany
+
+    // hasOne: Tem um
+    // hasMany: Tem muitos
+    // belongsTo: Pretence para
+    // belongsToMany: Muitos para Muitos
+
+    public function store()
+    {
+        return $this->hasOne(Store::class); // Este model user tem um model store ou user tem uma store
+        // return $this->hasOne(Store::class, 'usuario_id'); // Se o nome do campo não estiver nome do model_id
+    }
+
 }
