@@ -17,7 +17,11 @@ class Store extends Model
      * @var array
      */
     protected $fillable = [
-        
+        'name',
+        'description',
+        'phone',
+        'mobile_phone',
+        'slug',
     ];
 
     /**
@@ -61,7 +65,7 @@ Caso da tabela esteja com o nome diferente o ideal é usar a propriedate protect
     }
     public function  products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class);// Store tem muitos Products
     }
 
 }

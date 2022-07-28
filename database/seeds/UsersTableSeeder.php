@@ -2,6 +2,7 @@
 
 use App\User;
 use Illuminate\Database\Seeder;
+use App\Store;
 
 class UsersTableSeeder extends Seeder
 {
@@ -21,6 +22,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]
             ); */
-            factory(User::class, 40)->create();
+            factory(User::class, 40)->create()->each(function($user){ // O método each vai fazer alguma coisa a cada execução. Ou seja, para cada usuário ele cria uma loja 
+                // $user->store()->create(factory(Store::class)->make()); // O método create trabalha um arrays, por outro lado o método save, trabalha com objetos.
+                $user->store()->save(factory(Store::class)->make()); // O método make vai criar um objeto Store com as informações fakes
+            });
     }
 }

@@ -15,7 +15,11 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        
+        'name',
+        'description',
+        'body',
+        'price',
+        'slug',
     ];
 
     /**
@@ -49,18 +53,18 @@ Caso da tabela esteja com o nome diferente o ideal é usar a propriedate protect
 
     // hasOne: Tem um
     // hasMany: Tem muitos
-    // belongsTo: Pretence para
+    // belongsTo: Pertence para
     // belongsToMany: Muitos para Muitos
 
 
     public function store()
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Store::class); // Products pertence a store
     }
 
     public function category()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class); // Categorias pode ter muitos produtos
     }
 }
 
