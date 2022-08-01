@@ -77,7 +77,7 @@ Route::get('/model', function () {
 
     // ************************ Mass Update ************************
 
-    $user = User::find(1);
+    // $user = User::find(1);
     /* 
         $user = $user->update([
             'name' => 'Atualizando com Mass Update',
@@ -85,9 +85,17 @@ Route::get('/model', function () {
         ]);
         dd($user); // O retorno vai ser um booleano pq o $user está recebendo o $user->update([]);. True se ele atualizar ou False para a falha.
     */
-    $user->update([
+    /* $user->update([
         'name' => 'Atualizando com Mass Update',
         'email' => 'atualizado@teste.com'
     ]);
-    dd($user);
+    dd($user); */
+
+    $user = user::find(5);
+    // dd($user->store());//Chamando como método é retornado uma instancia de HasOne e não os dados em si.
+    // dd($user->store()->count());// Para savar é nescessário chamar como método.
+    $store = $user->store; //O objeto único (Store) se for Collection de Dados(Objetos)
+    return $store->products;
+
+
 });
