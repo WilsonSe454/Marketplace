@@ -11,7 +11,9 @@
 |
 */
 use App\Product;
+use App\Store;
 use App\User;
+use App\Category;
 
 Route::get('/', function () {
     $helloWorld = 'Hello World';
@@ -91,11 +93,68 @@ Route::get('/model', function () {
     ]);
     dd($user); */
 
-    $user = user::find(5);
+    // $user = user::find(5);
     // dd($user->store());//Chamando como método é retornado uma instancia de HasOne e não os dados em si.
     // dd($user->store()->count());// Para savar é nescessário chamar como método.
-    $store = $user->store; //O objeto único (Store) se for Collection de Dados(Objetos)
-    return $store->products;
+    // $store = $user->store; //O objeto único (Store) se for Collection de Dados(Objetos)
+    // return $store->products; // Pega todos os produtos desta loja
+    // dd($store->products()); // Retorna um objeto do tipo HasMany
+    // return $store->products()->where('id', 195)->get(); // Retorna o produto onde o id é 195. Paga usar o where, você procisa chamar products como método.
+
+
+// ******************************************************************************************************************
+    // Criar uma loja para um usuário
+        /* 
+        $user = User::find(10);
+        $store =$user->store()->create([
+            'name' => 'Loja teste',
+            'description' => 'Loja teste de produtos de informatica',
+            'mobile_phone' => 'XX-XXXXX-XXXX',
+            'phone' => 'XX-XXXXX-XXXX',
+            'slug' => 'loja-teste'
+        ]);
+
+        dd($store); 
+        */
+
+// ******************************************************************************************************************
+    // Criar uma produto para um loja
+        /* 
+        $store = Store::find(41);
+        $product = $store->products()->create([
+            'name' => 'Notebook Dell',
+            'description' => 'CORE I5',
+            'body' => 'Qualquer coisa',
+            'price' => '2999.95',
+            'slug' => 'notebook-dell',
+        ]);
+
+        dd($product); 
+        */
+
+// ******************************************************************************************************************
+    // Criar uma categoria
+        /* 
+        Category::create([
+            'name' => 'Games',
+            'description' => null,
+            'slug' => 'games',
+        ]);
+        Category::create([
+            'name' => 'Notebooks',
+            'description' => null,
+            'slug' => 'notebooks',
+        ]);
+
+        return Category::all();
+         */
+
+// ******************************************************************************************************************         
+    // Adicionar um produto para uma categoria ou vice-versa
+        $product = Product::find(821);
+        // dd($product->categories()->attach([2])); // Adiciona o id 
+        // dd($product->categories()->detach([2])); // Remove o id
+        dd($product->categories()->sync([2])); // O sync adiciona e remove a categoria Ex: sync([1,3]); ele vai adicionar a 1 e a 3, mas vai remover a 2
 
 
 });

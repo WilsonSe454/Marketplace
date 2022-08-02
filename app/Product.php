@@ -62,7 +62,7 @@ Caso da tabela esteja com o nome diferente o ideal é usar a propriedate protect
         return $this->belongsTo(Store::class); // Products pertence a store
     }
 
-    public function category()
+    public function categories()
     {
         return $this->belongsToMany(Category::class); // Categorias pode ter muitos produtos
     }
