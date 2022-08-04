@@ -14,6 +14,7 @@ use App\Product;
 use App\Store;
 use App\User;
 use App\Category;
+use App\Http\Controllers\Admin\StoreController;
 
 Route::get('/', function () {
     $helloWorld = 'Hello World';
@@ -158,3 +159,28 @@ Route::get('/model', function () {
 
 
 });
+
+//Route::get        Recuperar
+//Route::post       Criar
+//Route::put        Atualizar
+//Route::patch      Atualizar
+//Route::delete     Remoção
+//Route::options    Dentro do http retorna quais cabeçalhos aquela rota especifica responde
+
+
+// Route::prefix('admin')->namespace('Admin')->group(function(){ Fiz a importação dos controllers, neste caso não é nescessario o uso do namespace
+Route::prefix('admin')->namespace('Admin')->group(function(){
+
+    Route::prefix('stores')->group(function(){
+
+        Route::get('/', [StoreController::class, 'index']);
+        Route::get('/create', [StoreController::class, 'create']);
+        Route::post('/store', [StoreController::class, 'store']);
+        Route::get('/{store}/edit', [StoreController::class, 'edit']);
+        Route::post('/update/{store}', [StoreController::class, 'update']);
+
+    });
+
+    
+});
+
