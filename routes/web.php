@@ -15,6 +15,7 @@ use App\Store;
 use App\User;
 use App\Category;
 use App\Http\Controllers\Admin\StoreController;
+use App\Http\Controllers\Admin\ProductController;
 
 Route::get('/', function () {
     $helloWorld = 'Hello World';
@@ -168,20 +169,49 @@ Route::get('/model', function () {
 //Route::options    Dentro do http retorna quais cabeçalhos aquela rota especifica responde
 
 
-// Route::prefix('admin')->namespace('Admin')->group(function(){ Fiz a importação dos controllers, neste caso não é nescessario o uso do namespace
-Route::prefix('admin')->name('admin.')->group(function(){
+// Route::prefix('admin')->namespace('Admin')->group(function(){ Fiz a importação dos controllers, neste caso não é nescessario o uso do namespace. A não ser que use rotas com recurso, neste caso é necessário. 
+Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
     Route::prefix('stores')->name('stores.')->group(function(){
 
         Route::get('/', [StoreController::class, 'index'])->name('index');
-        Route::get('/create', [StoreController::class, 'create'])->name('create');
+        Route::get('/create', 'StoreController@create')->name('create');
         Route::post('/store', [StoreController::class, 'store'])->name('store');
-        Route::get('/{store}/edit', [StoreController::class, 'edit'])->name('edit');
+        Route::get('/{store}/edit', 'StoreController@edit')->name('edit');
         Route::post('/update/{store}', [StoreController::class, 'update'])->name('update');
-        Route::get('/destroy/{store}', [StoreController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{store}', 'StoreController@destroy')->name('destroy'); // Você pode usar das duas formas
 
     });
+
+    Route::resource('products', 'ProductController');// Como estou utilizadno rotas com recurso é necessário incluir o namespace
 
     
 });
 
+/* 
+php artisan route:list
+
++--------+-----------+-------------------------------+------------------------+------------------------------------------------------+--------------+
+| Domain | Method    | URI                           | Name                   | Action                                               | Middleware   |
++--------+-----------+-------------------------------+------------------------+------------------------------------------------------+--------------+
+|        | GET|HEAD  | /                             |                        | Closure                                              | web          |
+|        | GET|HEAD  | admin/products                | admin.products.index   | App\Http\Controllers\Admin\ProductController@index   | web          |
+|        | POST      | admin/products                | admin.products.store   | App\Http\Controllers\Admin\ProductController@store   | web          |
+|        | GET|HEAD  | admin/products/create         | admin.products.create  | App\Http\Controllers\Admin\ProductController@create  | web          |
+|        | GET|HEAD  | admin/products/{product}      | admin.products.show    | App\Http\Controllers\Admin\ProductController@show    | web          |
+|        | PUT|PATCH | admin/products/{product}      | admin.products.update  | App\Http\Controllers\Admin\ProductController@update  | web          |
+|        | DELETE    | admin/products/{product}      | admin.products.destroy | App\Http\Controllers\Admin\ProductController@destroy | web          |
+|        | GET|HEAD  | admin/products/{product}/edit | admin.products.edit    | App\Http\Controllers\Admin\ProductController@edit    | web          |
+|        | GET|HEAD  | admin/stores                  | admin.stores.index     | App\Http\Controllers\Admin\StoreController@index     | web          |
+|        | GET|HEAD  | admin/stores/create           | admin.stores.create    | App\Http\Controllers\Admin\StoreController@create    | web          |
+|        | GET|HEAD  | admin/stores/destroy/{store}  | admin.stores.destroy   | App\Http\Controllers\Admin\StoreController@destroy   | web          |
+|        | POST      | admin/stores/store            | admin.stores.store     | App\Http\Controllers\Admin\StoreController@store     | web          |
+|        | POST      | admin/stores/update/{store}   | admin.stores.update    | App\Http\Controllers\Admin\StoreController@update    | web          |
+|        | GET|HEAD  | admin/stores/{store}/edit     | admin.stores.edit      | App\Http\Controllers\Admin\StoreController@edit      | web          |
+|        | GET|HEAD  | api/user                      |                        | Closure                                              | api,auth:api |
+|        | GET|HEAD  | model                         |                        | Closure                                              | web          |
++--------+-----------+-------------------------------+------------------------+------------------------------------------------------+--------------+
+
+Route com Resource trabalha com todos os verbos http
+
+*/

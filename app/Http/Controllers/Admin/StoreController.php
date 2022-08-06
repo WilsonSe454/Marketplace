@@ -29,8 +29,10 @@ class StoreController extends Controller
 
         $user = User::find($data['user']);
         $store = $user->store()->create($data);
+
+        flash('Loja Criada com Sucesso')->success();
         
-        return $store;
+        return redirect()->route('admin.stores.index');
     }
 
     public function edit($id)
@@ -47,7 +49,9 @@ class StoreController extends Controller
         $store = Store::find($id);
         $store->update($data);
 
-        return $store;
+        flash('Loja Atualizada com Sucesso!')->success();
+
+        return redirect()->route('admin.stores.index');// Estou utilizadno o apelido da rota
     }
 
     public function destroy($id)
@@ -55,6 +59,9 @@ class StoreController extends Controller
         $store = Store::find($id);
         $store->delete();
 
-        return redirect('/admin/stores');
+        // return redirect('/admin/stores');
+
+        flash('Loja Removida com Sucesso!')->success();
+        return redirect()->route('admin.stores.index');// Estou utilizando o apelido da rota
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <h1>Atualizar Loja</h1>
-    <form action="/admin/stores/update/{{ $store->id }}" method="POST">
+    <form action="{{ route('admin.stores.update', ['store' => $store->id]) }}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
         {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
         @csrf
         
