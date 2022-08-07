@@ -2,7 +2,7 @@
 @section('content')
     <h1>Atualizar Loja</h1>
     <form action="{{ route('admin.stores.update', ['store' => $store->id]) }}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
-        {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
+        {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> pode ser substituido por @csrf --}}
         @csrf
         
         <div class="form-group">

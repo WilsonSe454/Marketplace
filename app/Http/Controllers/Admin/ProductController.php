@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Product;
+use App\Store;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate(10);
+
+        return view('admin.products.index', compact('products'));
     }
 
     /**
@@ -24,7 +28,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $stores = Store::all();
+        return view('admin.products.create', compact('stores'));
     }
 
     /**
@@ -35,7 +40,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $store = Store::find($data['store']);
+        $store->products()->create($data);
+
+        flash('Produto Criado com Sucesso!')->success();
+
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -57,7 +69,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
@@ -69,7 +83,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $product = Product::find($id);
+        $product->update($data);
+
+        flash('Produto Atualizado com Sucesso!')->success();
+
+        return redirect()->route('admin.products.index');
+
     }
 
     /**
