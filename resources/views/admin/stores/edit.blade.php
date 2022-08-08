@@ -4,7 +4,7 @@
     <form action="{{ route('admin.stores.update', ['store' => $store->id]) }}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
         {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> pode ser substituido por @csrf --}}
         @csrf
-        
+        @method('PUT')
         <div class="form-group">
             <label for="">Nome Loja</label>
             <input type="text" name="name" class="form-control" value="{{ $store->name }}">

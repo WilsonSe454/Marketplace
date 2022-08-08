@@ -6,7 +6,7 @@
             <tr>
                 <th>#</th>
                 <th>Produto</th>
-                <th>Descrição</th>
+                <th>Loja</th>
                 <th>Preço</th>
                 <th>Ações</th>
             </tr>
@@ -16,11 +16,17 @@
                 <tr>
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->description }}</td>
-                    <td>{{ $product->price }}</td>
+                    <td>{{ $product->store->name }}</td>
+                    <td>R$ {{ number_format($product->price, 2, ',', '.') }}</td>
                     <td>
-                        <a href="{{ route('admin.products.edit', ['product' => $product->id]) }}" class="btn btn-sm btn-primary">Editar</a>{{-- A função route espera como algumento o apelido da rota --}}
-                        <a href="{{ route('admin.products.destroy', ['product' => $product->id]) }}" class="btn btn-sm btn-danger">Remover</a>{{-- A função route espera como algumento o apelido da rota --}}
+                        <div class="btn-group">
+                            <a href="{{ route('admin.products.edit', ['product' => $product->id]) }}" class="btn btn-sm btn-primary">Editar</a>{{-- A função route espera como algumento o apelido da rota --}}
+                            <form action="{{ route('admin.products.destroy', ['product' => $product->id]) }}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
+                                @csrf
+                                @method('DELETE') {{-- É necessário para que o laravel interprete como uma requisição do tipo DELETE e mande para o método destroy --}}
+                                <button type="submit" class="btn btn-sm btn-danger">Remover</button>
+                            </form>
+                        </div>                            
                     </td>
                 </tr>
             @endforeach

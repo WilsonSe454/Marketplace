@@ -161,18 +161,36 @@ Route::get('/model', function () {
 
 });
 
-//Route::get        Recuperar
-//Route::post       Criar
-//Route::put        Atualizar
-//Route::patch      Atualizar
-//Route::delete     Remoção
-//Route::options    Dentro do http retorna quais cabeçalhos aquela rota especifica responde
+/* 
+
+Route::get        Recuperar  | Suportado pelo form html
+Route::post       Criar  | Suportado pelo form html
+Route::put        Atualizar  | Não suportado pelo form html  
+Route::patch      Atualizar  | Não suportado pelo form html
+Route::delete     Remoção  | Não suportado pelo form html
+Route::options    Dentro do http retorna quais cabeçalhos aquela rota especifica responde 
+
+Controllers como Recurso (Resource) pega cada verbo http e usa como eles devem ser usado!
+GET - /products | index
+GET - /products/10 | show
+GET - /products/10/edit | edit
+GET - /products/create | create
+POST - /products | store
+PUT ou PATCH - /products/10 | update
+DELETE - /product/10 | destroy
+
+Route::resource('products', 'ProductController');
+
+Conceitos também usados para criação de APIs | REST
+*/
 
 
-// Route::prefix('admin')->namespace('Admin')->group(function(){ Fiz a importação dos controllers, neste caso não é nescessario o uso do namespace. A não ser que use rotas com recurso, neste caso é necessário. 
-Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
-    Route::prefix('stores')->name('stores.')->group(function(){
+
+// Route::prefix('admin')->namespace('Admin')->group(function(){ Quando se faz a importação dos controllers torna-se opcional o uso do namespace, a não ser que use Controllers como Recurso, neste caso o namespace é necessário. 
+Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){ // inclui o namespace já que estou usando Controllers como Recurso
+
+    /* Route::prefix('stores')->name('stores.')->group(function(){
 
         Route::get('/', [StoreController::class, 'index'])->name('index');
         Route::get('/create', 'StoreController@create')->name('create');
@@ -181,9 +199,10 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
         Route::post('/update/{store}', [StoreController::class, 'update'])->name('update');
         Route::get('/destroy/{store}', 'StoreController@destroy')->name('destroy'); // Você pode usar das duas formas
 
-    });
+    }); */
 
-    Route::resource('products', 'ProductController');// Como estou utilizadno rotas com recurso é necessário incluir o namespace
+    Route::resource('stores', 'StoreController');
+    Route::resource('products', 'ProductController');
 
     
 });
