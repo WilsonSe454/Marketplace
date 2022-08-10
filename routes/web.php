@@ -188,24 +188,24 @@ Conceitos também usados para criação de APIs | REST
 
 
 // Route::prefix('admin')->namespace('Admin')->group(function(){ Quando se faz a importação dos controllers torna-se opcional o uso do namespace, a não ser que use Controllers como Recurso, neste caso o namespace é necessário. 
-Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){ // inclui o namespace já que estou usando Controllers como Recurso
+/* Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){ // inclui o namespace já que estou usando Controllers como Recurso
 
-    /* Route::prefix('stores')->name('stores.')->group(function(){
+    // Route::prefix('stores')->name('stores.')->group(function(){
 
-        Route::get('/', [StoreController::class, 'index'])->name('index');
-        Route::get('/create', 'StoreController@create')->name('create');
-        Route::post('/store', [StoreController::class, 'store'])->name('store');
-        Route::get('/{store}/edit', 'StoreController@edit')->name('edit');
-        Route::post('/update/{store}', [StoreController::class, 'update'])->name('update');
-        Route::get('/destroy/{store}', 'StoreController@destroy')->name('destroy'); // Você pode usar das duas formas
+    //     Route::get('/', [StoreController::class, 'index'])->name('index');
+    //     Route::get('/create', 'StoreController@create')->name('create');
+    //     Route::post('/store', [StoreController::class, 'store'])->name('store');
+    //     Route::get('/{store}/edit', 'StoreController@edit')->name('edit');
+    //     Route::post('/update/{store}', [StoreController::class, 'update'])->name('update');
+    //     Route::get('/destroy/{store}', 'StoreController@destroy')->name('destroy'); // Você pode usar das duas formas
 
-    }); */
+    // });
 
     Route::resource('stores', 'StoreController');
     Route::resource('products', 'ProductController');
 
     
-});
+}); */
 
 /* 
 php artisan route:list
@@ -232,5 +232,64 @@ php artisan route:list
 +--------+-----------+-------------------------------+------------------------+------------------------------------------------------+--------------+
 
 Route com Resource trabalha com todos os verbos http
+
+*/
+Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home')->middleware('auth'); // pode ser passado um middleware direto na rota
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth']], function(){
+
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function () {
+
+        Route::resource('stores', 'StoreController');
+        Route::resource('products', 'ProductController');
+
+    });
+});
+
+
+/* 
+
+php artisan route:list
++--------+-----------+-------------------------------+------------------------+------------------------------------------------------------------------+--------------+
+| Domain | Method    | URI                           | Name                   | Action                                                                 | Middleware   |
++--------+-----------+-------------------------------+------------------------+------------------------------------------------------------------------+--------------+
+|        | GET|HEAD  | /                             |                        | Closure                                                                | web          |
+|        | GET|HEAD  | admin/products                | admin.products.index   | App\Http\Controllers\Admin\ProductController@index                     | web          |
+|        | POST      | admin/products                | admin.products.store   | App\Http\Controllers\Admin\ProductController@store                     | web          |
+|        | GET|HEAD  | admin/products/create         | admin.products.create  | App\Http\Controllers\Admin\ProductController@create                    | web          |
+|        | GET|HEAD  | admin/products/{product}      | admin.products.show    | App\Http\Controllers\Admin\ProductController@show                      | web          |
+|        | PUT|PATCH | admin/products/{product}      | admin.products.update  | App\Http\Controllers\Admin\ProductController@update                    | web          |
+|        | DELETE    | admin/products/{product}      | admin.products.destroy | App\Http\Controllers\Admin\ProductController@destroy                   | web          |
+|        | GET|HEAD  | admin/products/{product}/edit | admin.products.edit    | App\Http\Controllers\Admin\ProductController@edit                      | web          |
+|        | GET|HEAD  | admin/stores                  | admin.stores.index     | App\Http\Controllers\Admin\StoreController@index                       | web          |
+|        | POST      | admin/stores                  | admin.stores.store     | App\Http\Controllers\Admin\StoreController@store                       | web          |
+|        | GET|HEAD  | admin/stores/create           | admin.stores.create    | App\Http\Controllers\Admin\StoreController@create                      | web          |
+|        | GET|HEAD  | admin/stores/{store}          | admin.stores.show      | App\Http\Controllers\Admin\StoreController@show                        | web          |
+|        | PUT|PATCH | admin/stores/{store}          | admin.stores.update    | App\Http\Controllers\Admin\StoreController@update                      | web          |
+|        | DELETE    | admin/stores/{store}          | admin.stores.destroy   | App\Http\Controllers\Admin\StoreController@destroy                     | web          |
+|        | GET|HEAD  | admin/stores/{store}/edit     | admin.stores.edit      | App\Http\Controllers\Admin\StoreController@edit                        | web          |
+|        | GET|HEAD  | api/user                      |                        | Closure                                                                | api,auth:api |
+|        | GET|HEAD  | home                          | home                   | App\Http\Controllers\HomeController@index                              | web,auth     |
+|        | GET|HEAD  | login                         | login                  | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest    |
+|        | POST      | login                         |                        | App\Http\Controllers\Auth\LoginController@login                        | web,guest    |
+|        | POST      | logout                        | logout                 | App\Http\Controllers\Auth\LoginController@logout                       | web          |
+|        | GET|HEAD  | model                         |                        | Closure                                                                | web          |
+|        | GET|HEAD  | password/confirm              | password.confirm       | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web,auth     |
+|        | POST      | password/confirm              |                        | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web,auth     |
+|        | POST      | password/email                | password.email         | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web          |
+|        | GET|HEAD  | password/reset                | password.request       | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web          |
+|        | POST      | password/reset                | password.update        | App\Http\Controllers\Auth\ResetPasswordController@reset                | web          |
+|        | GET|HEAD  | password/reset/{token}        | password.reset         | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web          |
+|        | GET|HEAD  | register                      | register               | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web,guest    |
+|        | POST      | register                      |                        | App\Http\Controllers\Auth\RegisterController@register                  | web,guest    |
++--------+-----------+-------------------------------+------------------------+------------------------------------------------------------------------+--------------+
+
+Middlewares: Dentro de aplicações web, ele é um código ou programa que é executado entre a requisição(Request) e 
+a nossa aplicação (é a lógica executada pelo acesso a um determinada rota)
+
+Request -> Middleware -> Aplicação (Acesso qualquer rota) <- Marketplace
 
 */
