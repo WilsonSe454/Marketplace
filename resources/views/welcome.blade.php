@@ -76,6 +76,12 @@
                             <a href="{{ route('register') }}">Register</a>
                         @endif
                     @endauth
+
+                    @guest
+                        {{-- <h1>Usuário não logado</h1> --}}
+                    @else
+                        <a href="{{ route('admin.stores.index') }}">Loja</a>
+                    @endguest   
                 </div>
             @endif
 

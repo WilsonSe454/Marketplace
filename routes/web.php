@@ -31,7 +31,7 @@ Route::get('/', function () {
     /* // O compact cria um array associativo com a chave passada como argumento.
     return view('welcome', compact('helloWorld')); */
     // return view('welcome');
-});
+})->name('home');;
 
 Route::get('/model', function () {
     /* $products = Product::all(); //select * from products
@@ -237,7 +237,7 @@ Route com Resource trabalha com todos os verbos http
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home')->middleware('auth'); // pode ser passado um middleware direto na rota
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function(){
 
