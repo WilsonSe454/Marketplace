@@ -29,5 +29,5 @@
         </tbody>
     </table>
 
-    {{$stores->links()}}
+    {{-- {{$stores->links()}} --}}
 @endsection

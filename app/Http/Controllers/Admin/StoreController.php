@@ -13,7 +13,9 @@ class StoreController extends Controller
     public function index()
     {
         // $stores = Store::all();
-        $stores = Store::paginate(10);
+        $user = auth()->user();
+        $stores = $user->store()->get();
+        // $stores = Store::paginate(10);
         //http://127.0.0.1:8000/admin/stores?page=2 para navegar para a página 2 ou use na view index o {{$stores->links()}}
         return view('admin.stores.index', compact('stores'));
     }
