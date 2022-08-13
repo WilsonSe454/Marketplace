@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Store;
 use App\User;
+use App\Http\Requests\StoreRequest;
 
 class StoreController extends Controller
 {
@@ -23,15 +24,17 @@ class StoreController extends Controller
         return view('admin.stores.create', compact('users'));
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $data = $request->all();
 
-        $user = User::find($data['user']);
-        $store = $user->store()->create($data);
+        $user = auth()->user();
+        // $user = User::find($data['user']);
+        // $store = $user->store()->create($data);
+        $user->store()->create($data);
 
         flash('Loja Criada com Sucesso')->success();
-        
+
         return redirect()->route('admin.stores.index');
     }
 
@@ -42,7 +45,7 @@ class StoreController extends Controller
         return view('admin.stores.edit', compact('store'));
     }
 
-    public function update(Request $request, $id)
+    public function update(StoreRequest $request, $id)
     {
         $data = $request->all();
 

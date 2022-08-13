@@ -28,6 +28,9 @@
                     <div class="my-2 my-lg-0">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
+                                <span class="nav-link">{{auth()->user()->name}}</span>
+                            </li>
+                            <li class="nav-item">
                                 {{-- use o event.preventDefault(); para evitar o comportamento padrão do link--}}
                                 <a class="nav-link" href="#" onclick="event.preventDefault(); document.querySelector('form.logout').submit();" aria-current="page" >Sair</a>
                                 <form action="{{ route('logout') }}" class="logout" method="POST" style="display:none">
