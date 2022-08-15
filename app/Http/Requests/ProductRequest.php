@@ -25,10 +25,17 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'description' => 'required',
+            'description' => 'required|min:30',
             'body' => 'required',
             'price' => 'required',
             'slug' => 'required'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'required' => 'O campo :attribute nome é obrigatório.',
+            'min' => 'A descrição deve ter pelo menos 30 caracteres.'
         ];
     }
     

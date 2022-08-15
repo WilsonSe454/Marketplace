@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <a href="{{ route('admin.stores.create') }}" class="btn btn-lg btn-success">Criar Loja</a>{{-- A função route espera como algumento o apelido da rota --}}
+    @if (!$store)
+        <a href="{{ route('admin.stores.create') }}" class="btn btn-lg btn-success">Criar Loja</a>{{-- A função route espera como algumento o apelido da rota --}}
+    @endif
+    
     <table class="table table-striped">
         <thead>
             <tr>
@@ -10,7 +13,6 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($stores as $store)
                 <tr>
                     <td>{{ $store->id }}</td>
                     <td>{{ $store->name }}</td>
@@ -25,9 +27,6 @@
                         </div>                            
                     </td>
                 </tr>
-            @endforeach
         </tbody>
     </table>
-
-    {{-- {{$stores->links()}} --}}
 @endsection

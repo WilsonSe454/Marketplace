@@ -13,15 +13,18 @@ class StoreController extends Controller
     public function index()
     {
         // $stores = Store::all();
-        $user = auth()->user();
-        $stores = $user->store()->get();
+        $store = auth()->user()->store;
         // $stores = Store::paginate(10);
         //http://127.0.0.1:8000/admin/stores?page=2 para navegar para a página 2 ou use na view index o {{$stores->links()}}
-        return view('admin.stores.index', compact('stores'));
+        return view('admin.stores.index', compact('store'));
     }
 
     public function create()
     {
+        if(auth()->user()->store()->count()){
+            flash('Você já possui uma loja!')->warning();
+            return redirect()->route('admin.stores.index');
+        }
         $users = User::all('id', 'name');
         return view('admin.stores.create', compact('users'));
     }

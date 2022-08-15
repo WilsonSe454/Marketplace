@@ -19,10 +19,10 @@
                 @auth
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link @if(request()->is('admin/stores')) active @endif" href="{{ route('admin.stores.index') }}" aria-current="page">Lojas</a>
+                            <a class="nav-link @if(request()->is('admin/stores*')) active @endif" href="{{ route('admin.stores.index') }}" aria-current="page">Lojas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @if(request()->is('admin/products')) active @endif" href="{{ route('admin.products.index') }}">Produtos</a>
+                            <a class="nav-link @if(request()->is('admin/products*')) active @endif" href="{{ route('admin.products.index') }}">Produtos</a>
                         </li>
                     </ul>
                     <div class="my-2 my-lg-0">
