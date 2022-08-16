@@ -43,8 +43,7 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
-        $user = auth()->user();
-        $store = $user->store;
+        $store = auth()->user()->store;
         // $store = Store::find($data['store']);
         $store->products()->create($data);
 
