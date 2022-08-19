@@ -28,7 +28,6 @@ class ProductRequest extends FormRequest
             'description' => 'required|min:30',
             'body' => 'required',
             'price' => 'required',
-            'slug' => 'required'
         ];
     }
     public function messages()

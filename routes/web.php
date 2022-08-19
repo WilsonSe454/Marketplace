@@ -245,6 +245,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::resource('stores', 'StoreController');
         Route::resource('products', 'ProductController');
+        Route::resource('categories', 'CategoryController');
 
     });
 });
@@ -253,39 +254,46 @@ Route::group(['middleware' => ['auth']], function(){
 /* 
 
 php artisan route:list
-+--------+-----------+-------------------------------+------------------------+------------------------------------------------------------------------+--------------+
-| Domain | Method    | URI                           | Name                   | Action                                                                 | Middleware   |
-+--------+-----------+-------------------------------+------------------------+------------------------------------------------------------------------+--------------+
-|        | GET|HEAD  | /                             |                        | Closure                                                                | web          |
-|        | GET|HEAD  | admin/products                | admin.products.index   | App\Http\Controllers\Admin\ProductController@index                     | web          |
-|        | POST      | admin/products                | admin.products.store   | App\Http\Controllers\Admin\ProductController@store                     | web          |
-|        | GET|HEAD  | admin/products/create         | admin.products.create  | App\Http\Controllers\Admin\ProductController@create                    | web          |
-|        | GET|HEAD  | admin/products/{product}      | admin.products.show    | App\Http\Controllers\Admin\ProductController@show                      | web          |
-|        | PUT|PATCH | admin/products/{product}      | admin.products.update  | App\Http\Controllers\Admin\ProductController@update                    | web          |
-|        | DELETE    | admin/products/{product}      | admin.products.destroy | App\Http\Controllers\Admin\ProductController@destroy                   | web          |
-|        | GET|HEAD  | admin/products/{product}/edit | admin.products.edit    | App\Http\Controllers\Admin\ProductController@edit                      | web          |
-|        | GET|HEAD  | admin/stores                  | admin.stores.index     | App\Http\Controllers\Admin\StoreController@index                       | web          |
-|        | POST      | admin/stores                  | admin.stores.store     | App\Http\Controllers\Admin\StoreController@store                       | web          |
-|        | GET|HEAD  | admin/stores/create           | admin.stores.create    | App\Http\Controllers\Admin\StoreController@create                      | web          |
-|        | GET|HEAD  | admin/stores/{store}          | admin.stores.show      | App\Http\Controllers\Admin\StoreController@show                        | web          |
-|        | PUT|PATCH | admin/stores/{store}          | admin.stores.update    | App\Http\Controllers\Admin\StoreController@update                      | web          |
-|        | DELETE    | admin/stores/{store}          | admin.stores.destroy   | App\Http\Controllers\Admin\StoreController@destroy                     | web          |
-|        | GET|HEAD  | admin/stores/{store}/edit     | admin.stores.edit      | App\Http\Controllers\Admin\StoreController@edit                        | web          |
-|        | GET|HEAD  | api/user                      |                        | Closure                                                                | api,auth:api |
-|        | GET|HEAD  | home                          | home                   | App\Http\Controllers\HomeController@index                              | web,auth     |
-|        | GET|HEAD  | login                         | login                  | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest    |
-|        | POST      | login                         |                        | App\Http\Controllers\Auth\LoginController@login                        | web,guest    |
-|        | POST      | logout                        | logout                 | App\Http\Controllers\Auth\LoginController@logout                       | web          |
-|        | GET|HEAD  | model                         |                        | Closure                                                                | web          |
-|        | GET|HEAD  | password/confirm              | password.confirm       | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web,auth     |
-|        | POST      | password/confirm              |                        | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web,auth     |
-|        | POST      | password/email                | password.email         | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web          |
-|        | GET|HEAD  | password/reset                | password.request       | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web          |
-|        | POST      | password/reset                | password.update        | App\Http\Controllers\Auth\ResetPasswordController@reset                | web          |
-|        | GET|HEAD  | password/reset/{token}        | password.reset         | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web          |
-|        | GET|HEAD  | register                      | register               | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web,guest    |
-|        | POST      | register                      |                        | App\Http\Controllers\Auth\RegisterController@register                  | web,guest    |
-+--------+-----------+-------------------------------+------------------------+------------------------------------------------------------------------+--------------+
++--------+-----------+----------------------------------+--------------------------+------------------------------------------------------------------------+-------------------------+
+| Domain | Method    | URI                              | Name                     | Action                                                                 | Middleware              |
++--------+-----------+----------------------------------+--------------------------+------------------------------------------------------------------------+-------------------------+
+|        | GET|HEAD  | /                                | home                     | Closure                                                                | web                     |
+|        | GET|HEAD  | admin/categories                 | admin.categories.index   | App\Http\Controllers\Admin\CategoryController@index                    | web,auth                |
+|        | POST      | admin/categories                 | admin.categories.store   | App\Http\Controllers\Admin\CategoryController@store                    | web,auth                |
+|        | GET|HEAD  | admin/categories/create          | admin.categories.create  | App\Http\Controllers\Admin\CategoryController@create                   | web,auth                |
+|        | GET|HEAD  | admin/categories/{category}      | admin.categories.show    | App\Http\Controllers\Admin\CategoryController@show                     | web,auth                |
+|        | PUT|PATCH | admin/categories/{category}      | admin.categories.update  | App\Http\Controllers\Admin\CategoryController@update                   | web,auth                |
+|        | DELETE    | admin/categories/{category}      | admin.categories.destroy | App\Http\Controllers\Admin\CategoryController@destroy                  | web,auth                |
+|        | GET|HEAD  | admin/categories/{category}/edit | admin.categories.edit    | App\Http\Controllers\Admin\CategoryController@edit                     | web,auth                |
+|        | GET|HEAD  | admin/products                   | admin.products.index     | App\Http\Controllers\Admin\ProductController@index                     | web,auth                |
+|        | POST      | admin/products                   | admin.products.store     | App\Http\Controllers\Admin\ProductController@store                     | web,auth                |
+|        | GET|HEAD  | admin/products/create            | admin.products.create    | App\Http\Controllers\Admin\ProductController@create                    | web,auth                |
+|        | GET|HEAD  | admin/products/{product}         | admin.products.show      | App\Http\Controllers\Admin\ProductController@show                      | web,auth                |
+|        | PUT|PATCH | admin/products/{product}         | admin.products.update    | App\Http\Controllers\Admin\ProductController@update                    | web,auth                |
+|        | DELETE    | admin/products/{product}         | admin.products.destroy   | App\Http\Controllers\Admin\ProductController@destroy                   | web,auth                |
+|        | GET|HEAD  | admin/products/{product}/edit    | admin.products.edit      | App\Http\Controllers\Admin\ProductController@edit                      | web,auth                |
+|        | GET|HEAD  | admin/stores                     | admin.stores.index       | App\Http\Controllers\Admin\StoreController@index                       | web,auth                |
+|        | POST      | admin/stores                     | admin.stores.store       | App\Http\Controllers\Admin\StoreController@store                       | web,auth,user.has.store |
+|        | GET|HEAD  | admin/stores/create              | admin.stores.create      | App\Http\Controllers\Admin\StoreController@create                      | web,auth,user.has.store |
+|        | GET|HEAD  | admin/stores/{store}             | admin.stores.show        | App\Http\Controllers\Admin\StoreController@show                        | web,auth                |
+|        | PUT|PATCH | admin/stores/{store}             | admin.stores.update      | App\Http\Controllers\Admin\StoreController@update                      | web,auth                |
+|        | DELETE    | admin/stores/{store}             | admin.stores.destroy     | App\Http\Controllers\Admin\StoreController@destroy                     | web,auth                |
+|        | GET|HEAD  | admin/stores/{store}/edit        | admin.stores.edit        | App\Http\Controllers\Admin\StoreController@edit                        | web,auth                |
+|        | GET|HEAD  | api/user                         |                          | Closure                                                                | api,auth:api            |
+|        | GET|HEAD  | login                            | login                    | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest               |
+|        | POST      | login                            |                          | App\Http\Controllers\Auth\LoginController@login                        | web,guest               |
+|        | POST      | logout                           | logout                   | App\Http\Controllers\Auth\LoginController@logout                       | web                     |
+|        | GET|HEAD  | model                            |                          | Closure                                                                | web                     |
+|        | GET|HEAD  | password/confirm                 | password.confirm         | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web,auth                |
+|        | POST      | password/confirm                 |                          | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web,auth                |
+|        | POST      | password/email                   | password.email           | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web                     |
+|        | GET|HEAD  | password/reset                   | password.request         | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web                     |
+|        | POST      | password/reset                   | password.update          | App\Http\Controllers\Auth\ResetPasswordController@reset                | web                     |
+|        | GET|HEAD  | password/reset/{token}           | password.reset           | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web                     |
+|        | GET|HEAD  | register                         | register                 | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web,guest               |
+|        | POST      | register                         |                          | App\Http\Controllers\Auth\RegisterController@register                  | web,guest               |
++--------+-----------+----------------------------------+--------------------------+------------------------------------------------------------------------+-------------------------+
+
 
 Middlewares: Dentro de aplicações web, ele é um código ou programa que é executado entre a requisição(Request) e 
 a nossa aplicação (é a lógica executada pelo acesso a um determinada rota)

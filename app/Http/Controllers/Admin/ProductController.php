@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Store;
+use App\Category;
 use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +22,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        // $products = Product::paginate(10);
+        $products = $this->product->paginate(10);
 
         return view('admin.products.index', compact('products'));
     }
@@ -29,8 +35,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $stores = Store::all();
-        return view('admin.products.create', compact('stores'));
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
@@ -71,9 +77,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        
-        return view('admin.products.edit', compact('product'));
+        // $product = Product::findOrFail($id);
+        $product = $this->product->findOrFail($id);
+
+        $categories = Category::all();
+
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -87,7 +96,8 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
-        $product = Product::find($id);
+        // $product = Product::find($id);
+        $product = $this->product->findOrFail($id);
         $product->update($data);
 
         flash('Produto Atualizado com Sucesso!')->success();
@@ -104,7 +114,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
+        // $product = Product::find($id);
+        $product = $this->product->find($id);
         $product->delete();
 
         flash('Produto Removido com Sucesso!')->success();
