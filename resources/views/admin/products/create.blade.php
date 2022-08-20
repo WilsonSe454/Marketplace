@@ -10,7 +10,7 @@
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
             @error('name')
                 <div class="invalid-feedback">
-                    {{$message}}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
@@ -20,7 +20,7 @@
             <input type="text" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}">
             @error('description')
                 <div class="invalid-feedback">
-                    {{$message}}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
@@ -30,7 +30,7 @@
             <textarea name="body" id="" cols="30" rows="10" class="form-control @error('body') is-invalid @enderror" value="{{ old('body') }}"></textarea>
             @error('body')
                 <div class="invalid-feedback">
-                    {{$message}}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
@@ -40,14 +40,14 @@
             <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}">
             @error('price')
                 <div class="invalid-feedback">
-                    {{$message}}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
 
         <div class="form-group">
-            <label for="">Categorias</label>
-            <select name="category" id="" class="form-control">
+            <label>Categorias</label>
+            <select name="categories[]" id=""  class="form-control" multiple>
                 @foreach ( $categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
@@ -56,12 +56,7 @@
 
         <div class="form-group">
             <label for="">Slug</label>
-            <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug') }}">
-            @error('slug')
-                <div class="invalid-feedback">
-                    {{$message}}
-                </div>
-            @enderror
+            <input type="text" name="slug" class="form-control" value="{{ old('slug') }}">
         </div>
 
         {{-- <div class="form-group">

@@ -6,7 +6,8 @@
             <tr>
                 <th>#</th>
                 <th>Produto</th>
-                <th>Loja</th>
+                {{-- <th>Loja</th> --}}
+                <th>Descrição</th>
                 <th>Preço</th>
                 <th>Ações</th>
             </tr>
@@ -16,7 +17,8 @@
                 <tr>
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->store->name }}</td>
+                    {{-- <td>{{ $product->store->name }}</td> --}}
+                    <td>{{ $product->description }}</td>
                     <td>R$ {{ number_format($product->price, 2, ',', '.') }}</td>
                     <td>
                         <div class="btn-group">

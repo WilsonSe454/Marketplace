@@ -7,8 +7,13 @@
         {{-- <input type="hidden" name="_method" value="PUT"> Os formularios não aceitam esse verbo. Essa é uma forma que o laravel utiliza para usar outros verbos http, que não são padrões como get e post. --}}
         @method('PUT')
         <div class="form-group">
-            <label for="">Nome Loja</label>
-            <input type="text" name="name" class="form-control" value="{{ $category->name }}">
+            <label for="">Nome da Categoria</label>
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ $category->name }}">
+            @error('name')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <div class="form-group">

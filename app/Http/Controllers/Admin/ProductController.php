@@ -23,8 +23,10 @@ class ProductController extends Controller
     public function index()
     {
         // $products = Product::paginate(10);
-        $products = $this->product->paginate(10);
+        // $products = $this->product->paginate(10);
 
+        $store = auth()->user()->store;
+        $products = $store->products()->paginate(10);
         return view('admin.products.index', compact('products'));
     }
 
@@ -51,7 +53,9 @@ class ProductController extends Controller
 
         $store = auth()->user()->store;
         // $store = Store::find($data['store']);
-        $store->products()->create($data);
+        $product = $store->products()->create($data);
+
+        $product->categories()->sync($data['categories']);
 
         flash('Produto Criado com Sucesso!')->success();
 
@@ -99,7 +103,7 @@ class ProductController extends Controller
         // $product = Product::find($id);
         $product = $this->product->findOrFail($id);
         $product->update($data);
-
+        $product->categories()->sync($data['categories']);
         flash('Produto Atualizado com Sucesso!')->success();
 
         return redirect()->route('admin.products.index');

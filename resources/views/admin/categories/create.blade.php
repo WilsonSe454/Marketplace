@@ -6,33 +6,23 @@
         @csrf
         
         <div class="form-group">
-            <label for="">Nome do Categoria</label>
+            <label for="">Nome da Categoria</label>
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
             @error('name')
                 <div class="invalid-feedback">
-                    {{$message}}
+                    {{ $message }}
                 </div>
             @enderror
         </div>
 
         <div class="form-group">
             <label for="">Descrição</label>
-            <input type="text" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}">
-            @error('description')
-                <div class="invalid-feedback">
-                    {{$message}}
-                </div>
-            @enderror
+            <input type="text" name="description" class="form-control" value="{{ old('description') }}">
         </div>
 
         <div class="form-group">
             <label for="">Slug</label>
-            <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug') }}">
-            @error('slug')
-                <div class="invalid-feedback">
-                    {{$message}}
-                </div>
-            @enderror
+            <input type="text" name="slug" class="form-control" value="{{ old('slug') }}">
         </div>
 
         <div>
