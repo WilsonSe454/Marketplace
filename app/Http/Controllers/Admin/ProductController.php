@@ -47,10 +47,17 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
+        // dd($request->file('photos')); //retorna objetos UploadedFile
 
+        $images = $request->file('photos');
+
+        foreach($images as $image){
+            print $image->store('products', 'public');
+        }
+        dd('Ok upload');
+        $data = $request->all();
         $store = auth()->user()->store;
         // $store = Store::find($data['store']);
         $product = $store->products()->create($data);

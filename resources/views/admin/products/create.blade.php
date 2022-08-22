@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <h1>Criar Produto</h1>
-    <form action="{{ route('admin.products.store')}}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
+    <form action="{{ route('admin.products.store')}}" method="POST" enctype="multipart/form-data">{{-- A função route espera como algumento o apelido da rota --}}
         {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> pode ser substituido por @csrf --}}
         @csrf
         
@@ -52,6 +52,12 @@
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
+        </div>
+
+        {{-- div.form-group>label+input[type=file].form-control --}}
+        <div class="form-group">
+            <label for="">Fotos do Produto</label>
+            <input type="file" name="photos[]" class="form-control" multiple> 
         </div>
 
         <div class="form-group">
