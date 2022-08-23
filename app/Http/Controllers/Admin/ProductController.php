@@ -47,22 +47,21 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // dd($request->file('photos')); //retorna objetos UploadedFile
-
-        $images = $request->file('photos');
-
-        foreach($images as $image){
-            print $image->store('products', 'public');
-        }
-        dd('Ok upload');
         $data = $request->all();
         $store = auth()->user()->store;
         // $store = Store::find($data['store']);
         $product = $store->products()->create($data);
 
         $product->categories()->sync($data['categories']);
+
+        if($request->hasFile('photos')){
+            $images = $this->imageUpload($request, 'image');
+            //Inserção destas imagens/referência na base
+            // $product->photos()->createMany(['image' => 'nome_da_foto.png'], ['image' => 'nome_da_foto.png']); nome da coluna e nome da foto. Igual ao que foi passado na função imageUpload
+            $product->photos()->createMany($images);
+        }
 
         flash('Produto Criado com Sucesso!')->success();
 
@@ -131,5 +130,21 @@ class ProductController extends Controller
 
         flash('Produto Removido com Sucesso!')->success();
         return redirect()->route('admin.products.index');
+    }
+
+    private function imageUpload(Request $request, $imageColumn)
+    {
+
+        // dd($request->file('photos')); //retorna objetos UploadedFile
+
+        $images = $request->file('photos');
+
+        $uploadedImages = [];
+
+        foreach ($images as $image) {
+            $uploadedImages[] = [$imageColumn => $image->store('products', 'public')];
+        }
+
+        return $uploadedImages;
     }
 }

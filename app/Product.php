@@ -66,5 +66,10 @@ Caso da tabela esteja com o nome diferente o ideal é usar a propriedate protect
     {
         return $this->belongsToMany(Category::class); // Categorias pode ter muitos produtos
     }
+
+    public function photos()
+    {
+        return $this->hasMany(ProductPhoto::class);
+    }
 }
 
