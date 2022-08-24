@@ -14,6 +14,7 @@ use App\Product;
 use App\Store;
 use App\User;
 use App\Category;
+use App\Http\Controllers\Admin\ProductPhotoController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\ProductController;
 
@@ -246,6 +247,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('stores', 'StoreController');
         Route::resource('products', 'ProductController');
         Route::resource('categories', 'CategoryController');
+
+
+        Route::post('photos/remove', [ProductPhotoController::class, 'removerPhoto'])->name('photo.remove');
 
     });
 });

@@ -110,6 +110,14 @@ class ProductController extends Controller
         $product = $this->product->findOrFail($id);
         $product->update($data);
         $product->categories()->sync($data['categories']);
+
+        if ($request->hasFile('photos')) {
+            $images = $this->imageUpload($request, 'image');
+            //Inserção destas imagens/referência na base
+            // $product->photos()->createMany(['image' => 'nome_da_foto.png'], ['image' => 'nome_da_foto.png']); nome da coluna e nome da foto. Igual ao que foi passado na função imageUpload
+            $product->photos()->createMany($images);
+        }
+        
         flash('Produto Atualizado com Sucesso!')->success();
 
         return redirect()->route('admin.products.index');

@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\ProductPhoto;
+use Illuminate\Support\Facades\Storage;
+
+class ProductPhotoController extends Controller
+{
+    public function removerPhoto(Request $request)// Como a foto tem um nome único vc pode passar o nome dela no lugar do id
+    {
+        //lembre te ter criado o link simbólico da pasta public/storege para a pasta storege/app/public
+
+        //Busco a foto no banco pelo ID dela ou pelo nome
+        $photoName = $request->get('photoName');
+        //Removo do arquivos
+        if(Storage::disk('public')->exists($photoName)){
+            Storage::disk('public')->delete($photoName);
+        }
+
+        //Removo a imagem do banco
+        $removoPhoto = ProductPhoto::where('image', $photoName);
+        $removoPhoto->delete();
+
+    }
+}

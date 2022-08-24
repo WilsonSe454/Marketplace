@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <h1>Atualizar Produto</h1>
-    <form action="{{ route('admin.products.update', ['product' => $product->id]) }}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
+    <form action="{{ route('admin.products.update', ['product' => $product->id]) }}" method="POST" enctype="multipart/form-data">{{-- A função route espera como algumento o apelido da rota --}}
         {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}">  pode ser substituido por @csrf --}}
         @csrf
         {{-- <input type="hidden" name="_method" value="PUT"> Os formularios não aceitam esse verbo. Essa é uma forma que o laravel utiliza para usar outros verbos http, que não são padrões como get e post. --}}
@@ -58,12 +58,30 @@
         </div>
 
         <div class="form-group">
+            <label for="">Fotos do Produto</label>
+            <input type="file" name="photos[]" class="form-control" multiple> 
+        </div>
+
+        <div class="form-group">
             <label for="">Slug</label>
             <input type="text" name="slug" class="form-control" value="{{ $product->slug }}">
         </div>
 
         <div>
             <button type="submit" class="btn btn-lg btn-success">Atualizar Produto</button>
+        </div>
+
+        <div class="row">
+            @foreach ($product->photos as $photo )
+                <div class="col-4 text-center">
+                    <img src="{{ asset('storage/' . $photo->image) }}" alt="" class="img-fluid">
+                    <form action="{{ route('admin.photo.remove') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="photoName" value="{{ $photo->image }}">
+                        <button class="btn btn-lg btn-danger" type="submit">REMOVER</button>
+                    </form>
+                </div>               
+            @endforeach
         </div>
     </form>
 @endsection
