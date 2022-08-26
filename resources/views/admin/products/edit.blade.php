@@ -71,7 +71,11 @@
             <button type="submit" class="btn btn-lg btn-success">Atualizar Produto</button>
         </div>
 
-        <div class="row">
+    </form>
+
+    <hr>
+
+    <div class="row">
             @foreach ($product->photos as $photo )
                 <div class="col-4 text-center">
                     <img src="{{ asset('storage/' . $photo->image) }}" alt="" class="img-fluid">
@@ -83,5 +87,4 @@
                 </div>               
             @endforeach
         </div>
-    </form>
 @endsection

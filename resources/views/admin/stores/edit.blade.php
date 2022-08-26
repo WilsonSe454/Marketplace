@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <h1>Atualizar Loja</h1>
-    <form action="{{ route('admin.stores.update', ['store' => $store->id]) }}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
+    <form action="{{ route('admin.stores.update', ['store' => $store->id]) }}" method="POST" enctype="multipart/form-data">{{-- A função route espera como algumento o apelido da rota --}}
         {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> pode ser substituido por @csrf --}}
         @csrf
         @method('PUT')
@@ -43,6 +43,11 @@
                     {{ $message }}
                 </div>
             @enderror
+        </div>
+
+        <div class="form-group">
+            <label>Foto da Loja</label>
+            <input type="file" class="form-control" name="logo">
         </div>
 
         <div class="form-group">

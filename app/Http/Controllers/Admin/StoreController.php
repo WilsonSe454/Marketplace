@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use App\Store;
 use App\User;
 use App\Http\Requests\StoreRequest;
+use App\Traits\UploadTrait;
 
 class StoreController extends Controller
 {
+    use UploadTrait;
     public function __construct()
     {
+        //Validação se o usuário tem apenas uma loja
         // $this->middleware('user.has.store')->except(); // todos menos esse
         $this->middleware('user.has.store')->only('create', 'store');// apenas esse
     }
@@ -38,6 +41,10 @@ class StoreController extends Controller
         $user = auth()->user();
         // $user = User::find($data['user']);
         // $store = $user->store()->create($data);
+
+        if($request->hasFile('logo')) {
+            $data['logo'] = $this->imageUpload($request->file('logo'));
+        }
         $user->store()->create($data);
 
         flash('Loja Criada com Sucesso')->success();
@@ -74,4 +81,20 @@ class StoreController extends Controller
         flash('Loja Removida com Sucesso!')->success();
         return redirect()->route('admin.stores.index');// Estou utilizando o apelido da rota
     }
+
+    /* private function imageUpload(Request $request, $imageColumn)
+    {
+
+        // dd($request->file('photos')); //retorna objetos UploadedFile
+
+        $images = $request->file('photos');
+
+        $uploadedImages = [];
+
+        foreach ($images as $image) {
+            $uploadedImages[] = [$imageColumn => $image->store('products', 'public')];
+        }
+
+        return $uploadedImages;
+    } */
 }

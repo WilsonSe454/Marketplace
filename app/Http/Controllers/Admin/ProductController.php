@@ -140,19 +140,4 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index');
     }
 
-    private function imageUpload(Request $request, $imageColumn)
-    {
-
-        // dd($request->file('photos')); //retorna objetos UploadedFile
-
-        $images = $request->file('photos');
-
-        $uploadedImages = [];
-
-        foreach ($images as $image) {
-            $uploadedImages[] = [$imageColumn => $image->store('products', 'public')];
-        }
-
-        return $uploadedImages;
-    }
 }

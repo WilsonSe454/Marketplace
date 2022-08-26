@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <h1>Criar Loja</h1>
-    <form action="{{ route('admin.stores.store')}}" method="POST">{{-- A função route espera como algumento o apelido da rota --}}
+    <form action="{{ route('admin.stores.store')}}" method="POST" enctype="multipart/form-data">{{-- A função route espera como algumento o apelido da rota --}}
         {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> pode ser substituido por @csrf --}}
         @csrf
         
@@ -44,6 +44,11 @@
                     {{ $message }}
                 </div>
             @enderror
+        </div>
+
+        <div class="form-group">
+            <label>Fotos da Loja</label>
+            <input type="file" name="logo" class="form-control">
         </div>
 
         <div class="form-group">
