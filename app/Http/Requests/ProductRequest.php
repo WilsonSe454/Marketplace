@@ -28,13 +28,15 @@ class ProductRequest extends FormRequest
             'description' => 'required|min:30',
             'body' => 'required',
             'price' => 'required',
+            'photos' => 'image'
         ];
     }
     public function messages()
     {
         return [
             'required' => 'O campo :attribute é obrigatório.',
-            'min' => 'A :attribute deve ter pelo menos :min caracteres.'
+            'min' => 'A :attribute deve ter pelo menos :min caracteres.',
+            'image' => 'Arquivo não é uma imagem válida!'
         ];
     }
     

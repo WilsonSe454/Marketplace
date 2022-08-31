@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Store;
 use App\Category;
+use App\Traits\UploadTrait;
 use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
+    use UploadTrait;
     public function __construct(Product $product)
     {
         $this->product = $product;
@@ -57,7 +59,7 @@ class ProductController extends Controller
         $product->categories()->sync($data['categories']);
 
         if($request->hasFile('photos')){
-            $images = $this->imageUpload($request, 'image');
+            $images = $this->imageUpload($request->file('photos'), 'image');
             //Inserção destas imagens/referência na base
             // $product->photos()->createMany(['image' => 'nome_da_foto.png'], ['image' => 'nome_da_foto.png']); nome da coluna e nome da foto. Igual ao que foi passado na função imageUpload
             $product->photos()->createMany($images);
@@ -112,7 +114,7 @@ class ProductController extends Controller
         $product->categories()->sync($data['categories']);
 
         if ($request->hasFile('photos')) {
-            $images = $this->imageUpload($request, 'image');
+            $images = $this->imageUpload($request->file('photos'), 'image');
             //Inserção destas imagens/referência na base
             // $product->photos()->createMany(['image' => 'nome_da_foto.png'], ['image' => 'nome_da_foto.png']); nome da coluna e nome da foto. Igual ao que foi passado na função imageUpload
             $product->photos()->createMany($images);
