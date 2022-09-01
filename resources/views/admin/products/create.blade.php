@@ -27,7 +27,7 @@
 
         <div class="form-group">
             <label for="">Conteúdo</label>
-            <textarea name="body" id="" cols="30" rows="10" class="form-control @error('body') is-invalid @enderror" value="{{ old('body') }}"></textarea>
+            <textarea name="body" id="" cols="30" rows="10" class="form-control @error('body') is-invalid @enderror">{{ old('body') }}</textarea>
             @error('body')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -47,7 +47,7 @@
 
         <div class="form-group">
             <label>Categorias</label>
-            <select name="categories[]" id=""  class="form-control" multiple>
+            <select name="categories[]" id="" class="form-control" multiple>
                 @foreach ( $categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
@@ -57,8 +57,8 @@
         {{-- div.form-group>label+input[type=file].form-control --}}
         <div class="form-group">
             <label for="">Fotos do Produto</label>
-            <input type="file" name="photos[]" class="form-control @error('photos') is-invalid @enderror" multiple> 
-            @error('photos')
+            <input type="file" name="photos[]" class="form-control @error('photos.*') is-invalid @enderror" multiple> 
+            @error('photos.*')
                 <div class="invalid-feedback">
                     {{ $message}}
                 </div>
@@ -83,4 +83,5 @@
             <button type="submit" class="btn btn-lg btn-success">Criar Produto</button>
         </div>
     </form>
+
 @endsection
