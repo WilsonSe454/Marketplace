@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Model;//O Eloquent é um ORM (Object–relational mapping "Mapeamento objeto-relacional") 
+use Illuminate\Database\Eloquent\Model; //O Eloquent é um ORM (Object–relational mapping "Mapeamento objeto-relacional") 
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Category extends Model
 {
+    use HasSlug;
     use Notifiable;
 
     /**
@@ -19,6 +22,14 @@ class Category extends Model
         'description',
         'slug',
     ];
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
 
     /**
      * Os atributos que devem ser ocultados para arrays.

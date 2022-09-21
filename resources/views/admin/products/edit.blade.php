@@ -67,11 +67,13 @@
             @enderror
         </div>
 
-        <div class="form-group">
+        {{-- O Slug foi dinamizado --}}
+        
+        {{-- <div class="form-group">
             <label for="">Slug</label>
             <input type="text" name="slug" class="form-control" value="{{ $product->slug }}">
-        </div>
-
+        </div>--}}
+        
         <div>
             <button type="submit" class="btn btn-lg btn-success">Atualizar Produto</button>
         </div>

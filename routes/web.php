@@ -17,22 +17,25 @@ use App\Category;
 use App\Http\Controllers\Admin\ProductPhotoController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    $helloWorld = 'Hello World';
+// Route::get('/', function () {
+//     $helloWorld = 'Hello World';
 
-    // return view('welcome', ['helloWorld' => $helloWorld]);// eturn view('nome da view', ['chave' => $variável]);
+//     // return view('welcome', ['helloWorld' => $helloWorld]);// return view('nome da view', ['chave' => $variável]);
 
-    // vc pode passar várias chaves 
-    return view('welcome', [
-        'helloWorld' => $helloWorld,
-        'teste' => 'testando'
-    ]); 
+//     // vc pode passar várias chaves 
+//     return view('welcome', [
+//         'helloWorld' => $helloWorld,
+//         'teste' => 'testando'
+//     ]); 
 
-    /* // O compact cria um array associativo com a chave passada como argumento.
-    return view('welcome', compact('helloWorld')); */
-    // return view('welcome');
-})->name('home');;
+//     /* // O compact cria um array associativo com a chave passada como argumento.
+//     return view('welcome', compact('helloWorld')); */
+//     // return view('welcome');
+// })->name('home');;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');;
 
 Route::get('/model', function () {
     /* $products = Product::all(); //select * from products

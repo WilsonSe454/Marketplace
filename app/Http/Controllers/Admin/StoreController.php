@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class StoreController extends Controller
 {
+
     use UploadTrait;
     public function __construct()
     {
@@ -83,6 +84,10 @@ class StoreController extends Controller
     public function destroy($id)
     {
         $store = Store::find($id);
+        $produtos = $store->products->all();
+        foreach ($produtos as $produto ) {
+            $produto->delete();
+        }
         $store->delete();
 
         // return redirect('/admin/stores');
