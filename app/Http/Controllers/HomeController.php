@@ -35,6 +35,13 @@ class HomeController extends Controller
         // return view('home');
         return view('welcome', compact('products'));
     }
+
+    public function single($slug)
+    {
+        $produto = $this->product->whereSlug($slug)->first();
+            
+        return view('single', compact('produto'));
+    }
 }
 
 /* 

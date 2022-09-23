@@ -17,7 +17,9 @@ use App\Category;
 use App\Http\Controllers\Admin\ProductPhotoController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+
 
 // Route::get('/', function () {
 //     $helloWorld = 'Hello World';
@@ -34,8 +36,6 @@ use App\Http\Controllers\HomeController;
 //     return view('welcome', compact('helloWorld')); */
 //     // return view('welcome');
 // })->name('home');;
-
-Route::get('/', [HomeController::class, 'index'])->name('home');;
 
 Route::get('/model', function () {
     /* $products = Product::all(); //select * from products
@@ -157,10 +157,10 @@ Route::get('/model', function () {
 
 // ******************************************************************************************************************         
     // Adicionar um produto para uma categoria ou vice-versa
-        $product = Product::find(821);
+        //$product = Product::find(821);
         // dd($product->categories()->attach([2])); // Adiciona o id 
         // dd($product->categories()->detach([2])); // Remove o id
-        dd($product->categories()->sync([2])); // O sync adiciona e remove a categoria Ex: sync([1,3]); ele vai adicionar a 1 e a 3, mas vai remover a 2
+        //dd($product->categories()->sync([2])); // O sync adiciona e remove a categoria Ex: sync([1,3]); ele vai adicionar a 1 e a 3, mas vai remover a 2
 
 
 });
@@ -237,7 +237,17 @@ php artisan route:list
 
 Route com Resource trabalha com todos os verbos http
 
+
 */
+Route::get('/', [HomeController::class, 'index'])->name('home');;
+Route::get('/product/{slug}', [HomeController::class, 'single'])->name('product.single');
+
+route::prefix('cart')->name('cart.')->group(function(){
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::post('add', [CartController::class, 'add'])->name('add');
+});
+
+
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home')->middleware('auth'); // pode ser passado um middleware direto na rota
