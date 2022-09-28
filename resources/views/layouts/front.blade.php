@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -30,8 +30,9 @@
             </li>
         </ul>
 
-    @auth
-           <ul class="navbar-nav mr-auto">
+        @auth
+           <div class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto">
                     <li class="nav-item @if(request()->is('admin/stores*')) active @endif">
                         <a class="nav-link" href="{{route('admin.stores.index')}}">Lojas <span class="sr-only">(current)</span></a>
                     </li>
@@ -42,23 +43,40 @@
                         <a class="nav-link" href="{{route('admin.categories.index')}}">Categorias</a>
                     </li>
                 </ul>
-
-                <div class="my-2 my-lg-0">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <span class="nav-link">{{auth()->user()->name}}</span>
-                            </li>
-                            <li class="nav-item">
-                                {{-- use o event.preventDefault(); para evitar o comportamento padrão do link--}}
-                                <a class="nav-link" href="#" onclick="event.preventDefault(); document.querySelector('form.logout').submit();" aria-current="page" >Sair</a>
-                                <form action="{{ route('logout') }}" class="logout" method="POST" style="display:none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+           </div>
         @endauth
+        <div>
+            <ul class="navbar-nav mr-auto">
+                <li>
+                    <a href="{{ route('cart.index') }}" class="nav-link">
+                        @if (session()->has('cart'))
+                            {{-- Conta quantos de produtos foram adicionados ao carrinho sem considerar a quantidade de cada produto--}}
+                            <span class="badge badge-danger">{{ count(session()->get('cart')) }}</span>
 
+                            {{-- Soma quantidade de produtos adicionada ao carrinho considerando a quantidade de cada produto--}}
+                            {{-- <span class="badge badge-danger">{{ array_sum(array_column(session()->get('cart'), 'amount')) }}</span> --}}
+                        @endif
+                        <i class="fa fa-shopping-cart fa-2x"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        @auth
+            <div class="my-2 my-lg-0">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <span class="nav-link">{{auth()->user()->name}}</span>
+                    </li>
+                    <li class="nav-item">
+                        <!-- use o event.preventDefault(); para evitar o comportamento padrão do link -->
+                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.querySelector('form.logout').submit();" aria-current="page" >Sair</a>
+                        <form action="{{ route('logout') }}" class="logout" method="POST" style="display:none">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        @endauth
     </div>
 </nav>
 
