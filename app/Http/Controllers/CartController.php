@@ -21,8 +21,27 @@ class CartController extends Controller
 
         // verificar se existe sessão para os produtos
         if(session()->has('cart')){
-            // existindo eu adiciono estes produtos na sessão existente
-            session()->push('cart', $produto);
+
+            // Pego os itens da sessão
+            $products = session()->get('cart');
+            // Pego a coluna slug
+            $productsSlugs = array_column($products, 'slug');
+
+            // Se em array produto slug existir dentro de productsSlugs
+            if(in_array($produto['slug'], $productsSlugs)){
+                // Chamo o método productIncremente para incrementar o amount do produto. Ele vai retornar um array modificado
+                $products = $this->productIncrement($produto['slug'], $produto['amount'], $products);
+
+                // sobrescreve a sessão com o array modificado retornado pelo método productIncremente
+                session()->put('cart', $products);
+
+            } else { // Caso não aja duplicidade dos amounts
+
+                // existindo eu adiciono estes produtos na sessão existente
+                session()->push('cart', $produto);
+            }
+
+            
         } else {
             // não existindo eu crio esta sessão com o primeiro produto
             $produtos[] = $produto;
@@ -62,5 +81,24 @@ class CartController extends Controller
 
         flash('Compra cancelada!')->success();
         return redirect()->route('cart.index');
+    }
+
+    private function productIncrement($slug, $amount, $products)
+    {
+        // Modifica o array products por meio do array_map
+        $products = array_map(function($line) use($slug, $amount){
+
+            // Se slug for igual a linha slug, soma o amount da linha com o amount do products
+            if($slug == $line['slug']){
+                $line['amount'] += $amount;
+            }
+
+            // retorna a linha modificada
+            return $line;
+
+        }, $products); 
+
+        // retorna o array modificado
+        return $products;
     }
 }
