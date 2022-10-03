@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\ProductPhotoController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 
 
@@ -250,6 +251,9 @@ route::prefix('cart')->name('cart.')->group(function(){
     // Route::post('concluir/{slug}', [CartController::class, 'concluir'])->name('concluir');
 });
 
+Route::prefix('chekout')->name('chekout.')->group(function(){
+    Route::get('/', [CheckoutController::class, 'index'])->name('index');
+});
 
 Auth::routes();
 

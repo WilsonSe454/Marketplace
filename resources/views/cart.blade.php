@@ -45,7 +45,7 @@
                 </table>
                 <hr>
                 <div class="col-md-12">
-                    <a href="#" class="btn btn-lg btn-success pull-right">Concluir Compra</a>
+                    <a href="{{ route('chekout.index') }}" class="btn btn-lg btn-success pull-right">Concluir Compra</a>
                     <a href="{{ route('cart.cancelar') }}" class="btn btn-lg btn-danger pull-left">Cancelar Compra</a>
                 </div>
             @else

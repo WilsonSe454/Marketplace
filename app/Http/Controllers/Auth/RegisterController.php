@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -70,5 +71,16 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    // sobrescreve o método registered
+    protected function registered(Request $request, $user)
+    {
+        // Tem um carrinho na sessão? tem! então mande o usuário para o chekout
+        if (session()->has('cart')) {
+            return redirect()->route('chekout.index');
+        }
+
+        return null;
     }
 }
