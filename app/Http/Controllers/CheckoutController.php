@@ -8,6 +8,7 @@ class CheckoutController extends Controller
 {
     public function index()
     {
+        
         if(!auth()->check()){
             return redirect()->route('login');
         }
@@ -17,7 +18,7 @@ class CheckoutController extends Controller
         // usar o var_dump e não o dd
         var_dump(session()->get('pagseguro_session_code'));
 
-        // Remove a chave da sessão
+        // Remove a chave da sessão. Vc pode usar isso para forçar a geração de uma nova chave, ex: se a chave expirar.
         // session()->forget('pagseguro_session_code');
         return view('checkout');
     }
