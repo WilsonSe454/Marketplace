@@ -246,13 +246,15 @@ Route::get('/product/{slug}', [HomeController::class, 'single'])->name('product.
 route::prefix('cart')->name('cart.')->group(function(){
     Route::get('/', [CartController::class, 'index'])->name('index');
     Route::post('add', [CartController::class, 'add'])->name('add');
+    
     Route::get('remove/{slug}', [CartController::class, 'remove'])->name('remover');
     Route::get('cancel', [CartController::class, 'cancel'])->name('cancelar');
-    // Route::post('concluir/{slug}', [CartController::class, 'concluir'])->name('concluir');
+    
 });
 
 Route::prefix('chekout')->name('chekout.')->group(function(){
     Route::get('/', [CheckoutController::class, 'index'])->name('index');
+    Route::post('/proccess', [CheckoutController::class, 'proccess'])->name('proccess');
 });
 
 Auth::routes();
