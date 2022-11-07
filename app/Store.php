@@ -72,11 +72,16 @@ Caso da tabela esteja com o nome diferente o ideal é usar a propriedate protect
         return $this->belongsTo(User::class); // Este model store pertence á o model user ou store pertence a user
         //return $this->belongsTo(User::class, 'usuario_id'); // Se o nome do campo não estiver nome do model_id
     }
+
     public function  products()
     {
-        return $this->hasMany(Product::class);// Store tem muitos Products
+        return $this->hasMany(Product::class); // Store tem muitos Products
     }
 
+    public function orders()
+    {
+        return $this->hasMany(UserOrder::class); // Store tem muitas orders
+    }
 }
 
     

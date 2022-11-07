@@ -53,4 +53,9 @@ class User extends Authenticatable
         // return $this->hasOne(Store::class, 'usuario_id'); // Se o nome do campo não estiver nome do model_id
     }
 
+    public function orders()
+    {
+        return $this->hasMany(UserOrder::class); // User tem muitas orders
+    }
+
 }
