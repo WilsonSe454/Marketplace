@@ -255,6 +255,7 @@ route::prefix('cart')->name('cart.')->group(function(){
 Route::prefix('chekout')->name('chekout.')->group(function(){
     Route::get('/', [CheckoutController::class, 'index'])->name('index');
     Route::post('/proccess', [CheckoutController::class, 'proccess'])->name('proccess');
+    Route::get('/thanks', [CheckoutController::class, 'thanks'])->name('thanks');
 });
 
 Auth::routes();

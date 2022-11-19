@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Payment\Pagseguro\CreditCard;
+use Exception;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -12,7 +14,8 @@ class CheckoutController extends Controller
         if(!auth()->check()){
             return redirect()->route('login');
         }
-
+        // se não tiver o cart na sessão, direcione para home
+        if(!session()->has('cart')) return redirect()->route('home');
         $this->makePagSeguroSession();
 
 
@@ -39,140 +42,64 @@ class CheckoutController extends Controller
 
     public function proccess(Request $request)
     {
-        $dataPost = $request->all();
+        try {
+            $dataPost = $request->all();
 
-        // Defina um código de referência para esta solicitação de pagamento. É útil identificar este pagamento
-        // em notificações futuras.
-        $reference = 'XPTO';
-        $creditCard = new \PagSeguro\Domains\Requests\DirectPayment\CreditCard();
+            // Defina um código de referência para esta solicitação de pagamento. É útil identificar este pagamento
+            // em notificações futuras.
 
-        // É possível pegar o ReceiverEmail utilizando a função env e passando como argumento a chave PAGSEGURO_EMAIL
-        $creditCard->setReceiverEmail(env('PAGSEGURO_EMAIL'));
 
-        // Variável reference que vai armazenar o código referência para poder identificar a transação futuramente
-        $creditCard->setReference($reference);
+            // Pega o usuário autenticado
+            $user = auth()->user();
 
-        // Moeda utilizada
-        $creditCard->setCurrency("BRL");
+            $reference = 'XPTO';
 
-        // Pega os itens do carrinho
-        $cartItems = session()->get('cart');
+            // Pega os itens do carrinho
+            $cartItems = session()->get('cart');
 
-        // Adiciona os itens à transação
-        foreach($cartItems as $item) {
-            $creditCard->addItems()->withParameters(
-                $reference,
-                $item['name'],
-                $item['amount'],
-                $item['price']
-            );
+            $creditCardPayment = new CreditCard($cartItems, $user, $dataPost, $reference);
+
+            $result = $creditCardPayment->doPayment();
+
+            // var_dump($result);
+
+            $userOrder = [
+                'reference' => $reference,
+                'pagseguro_code' => $result->getCode(),
+                'pagseguro_status' => $result->getStatus(),
+                'items' => serialize($cartItems),
+                'store_id' => 50
+
+            ];
+
+            $user->orders()->create($userOrder);
+
+            session()->forget('cart');
+            session()->forget('pagseguro_session_code');
+
+            return response()->json([
+                'data' => [
+                    'status' => true,
+                    'message' => 'Pedido criado com sucesso!',
+                    'order' => $reference
+                ]
+            ]);
+        } catch (\Exception $e) {
+            //A messagem com o erro só vai aparecer em ambiente de desenvolvimento
+            $message = env('APP_DEBUG') ? $e->getMessage() : 'Erro ao processar pedido!';
+            return response()->json([
+                'data' => [
+                    'status' => false,
+                    'message' => $message
+                ]
+            ], 401);
         }
-
-        // Defina as informações do seu cliente.
-        // Se você usa SANDBOX você deve usar um e-mail @sandbox.pagseguro.com.br
-
-        // Informações do cliente
-
-        // Pega o usuário autenticado
-        $user = auth()->user();
-        // Se estiver em ambiente de test "quando a variável no .env estiver com sandbox" use o email test@sandbox.pagseguro.com.br. Caso contrario use o email do usuário.
-        $email = env('PAGSEGURO_ENV') == 'sandbox' ? 'test@sandbox.pagseguro.com.br' : $user->email;
-
-        $creditCard->setSender()->setName($user->name);
-        $creditCard->setSender()->setEmail($email);
-
-        $creditCard->setSender()->setPhone()->withParameters(
-            11,
-            56273440
-        );
-
-        $creditCard->setSender()->setDocument()->withParameters(
-            'CPF',
-            '87201383698'
-        );
-
-        $creditCard->setSender()->setHash($dataPost['hash']);
-
-        $creditCard->setSender()->setIp('127.0.0.0');
-
-        // Definir informações de envio para esta solicitação de pagamento
-        $creditCard->setShipping()->setAddress()->withParameters(
-            'Av. Brig. Faria Lima',
-            '1384',
-            'Jardim Paulistano',
-            '01452002',
-            'São Paulo',
-            'SP',
-            'BRA',
-            'apto. 114'
-        );
-
-        // Definir informações de cobrança do cartão de crédito
-        $creditCard->setBilling()->setAddress()->withParameters(
-            'Av. Brig. Faria Lima',
-            '1384',
-            'Jardim Paulistano',
-            '01452002',
-            'São Paulo',
-            'SP',
-            'BRA',
-            'apto. 114'
-        );
-
-        // Set credit card token
-        $creditCard->setToken($dataPost['card_token']);
-
-        list($quantity, $installmentAmount) = explode('|', $dataPost['installment']);
-
-        $installmentAmount = number_format($installmentAmount, 2, '.', '');
-        
-        // Defina a quantidade e o valor da parcela (pode ser obtido usando o service, que tem um exemplo aqui em \public\getInstallments.php)
-        $creditCard->setInstallment()->withParameters($quantity, $installmentAmount);
-
-        // Defina as informações do titular do cartão de crédito
-        $creditCard->setHolder()->setBirthdate('01/10/1979');
-        // Igual no cartão de crédito
-        $creditCard->setHolder()->setName($dataPost['card_name']); 
-
-        $creditCard->setHolder()->setPhone()->withParameters(
-            11,
-            56273440
-        );
-
-        $creditCard->setHolder()->setDocument()->withParameters(
-            'CPF',
-            '87201383698'
-        );
-
-        // Defina o modo de pagamento para esta solicitação de pagamento
-        $creditCard->setMode('DEFAULT');
-
-        //Obtenha as credenciais e registre o pagamento com cartão de crédito
-        $result = $creditCard->register(
-            \PagSeguro\Configuration\Configure::getAccountCredentials()
-        );
-
-        // var_dump($result);
-
-        $userOrder = [
-            'reference' => $reference,
-            'pagseguro_code' => $result->getCode(),
-            'pagseguro_status' => $result->getStatus(),
-            'items' => serialize($cartItems),
-            'store_id' => 50
-
-        ];
-
-        $user->orders()->create($userOrder);
-
-        return response()->json([
-            'data' => [
-                'status' => true,
-                'message' => 'Pedido criado com sucesso!'
-            ]
-        ]);
     }
 
+    public function thanks()
+    {
+        return view('thanks');
+    }
 
     private function makePagSeguroSession()
     {
