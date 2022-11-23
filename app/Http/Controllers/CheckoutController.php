@@ -14,7 +14,7 @@ class CheckoutController extends Controller
         if(!auth()->check()){
             return redirect()->route('login');
         }
-        // se não tiver o cart na sessão, direcione para home
+        // se não tiver o cart na sessão, direcione para home 
         if(!session()->has('cart')) return redirect()->route('home');
         $this->makePagSeguroSession();
 
