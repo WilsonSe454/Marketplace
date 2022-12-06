@@ -10,13 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use App\Product;
-use App\Store;
-use App\User;
-use App\Category;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\ProductPhotoController;
-use App\Http\Controllers\Admin\StoreController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
@@ -242,6 +237,7 @@ Route com Resource trabalha com todos os verbos http
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');;
 Route::get('/product/{slug}', [HomeController::class, 'single'])->name('product.single');
+Route::get('/category/{slug}', [CategoryController::class, 'index'] )->name('category.single');
 
 route::prefix('cart')->name('cart.')->group(function(){
     Route::get('/', [CartController::class, 'index'])->name('index');
@@ -323,7 +319,7 @@ php artisan route:list
 
 
 Middlewares: Dentro de aplicações web, ele é um código ou programa que é executado entre a requisição(Request) e 
-a nossa aplicação (é a lógica executada pelo acesso a um determinada rota)
+a nossa aplicação (é a lógica executada pelo acesso a uma determinada rota)
 
 Request -> Middleware -> Aplicação (Acesso qualquer rota) <- Marketplace
 

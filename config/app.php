@@ -175,6 +175,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        
+        // Registrar o provider ComposerServiceProvider
+        App\Providers\ComposerServiceProvider::class,
+
     ],
 
     /*
