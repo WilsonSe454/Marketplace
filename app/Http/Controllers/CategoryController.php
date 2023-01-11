@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index($slug)
     {
         $category = $this->category->whereSlug($slug)->first();
-        dd($category);
+        // dd($category);
         return view('category', compact('category'));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Product;
 
 class CartController extends Controller
 {
@@ -17,7 +18,26 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $produto = $request->get('product');
+        $produtoData = $request->get('product');
+
+        $produto = Product::whereSlug($produtoData['slug']);
+
+        /* 
+        if(!$produto->count() || $produtoData['amount'] == 0) 
+            return redirect()->route('product.single', ['slug' =>$produtoData['slug']]);
+        */
+
+        // Valida se o slug foi modificado e redireciona para a home, caso ele tenha sido modificado
+        if(!$produto->count()) 
+            return redirect()->route('home');
+
+        // Valida se o amount é igual a zero, e direciona para a single do produto caso seja
+        if ($produtoData['amount'] == 0)
+            return redirect()->route('product.single', ['slug' => $produtoData['slug']]);
+        
+        // Faz um merge dos dados que vieram da request com os dados do banco
+        $produto = array_merge($produtoData, $produto->first(['name', 'price'])->toArray());
+
 
         // verificar se existe sessão para os produtos
         if(session()->has('cart')){
