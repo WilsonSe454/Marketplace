@@ -22,4 +22,9 @@ class UserOrder extends Model
     {
         return $this->belongsTo(Store::class); // UserOrders pertence a store
     }
+
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class);
+    }
 }
