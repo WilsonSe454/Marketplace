@@ -57,6 +57,9 @@ class CheckoutController extends Controller
             // Pega os itens do carrinho
             $cartItems = session()->get('cart');
 
+            //Array com os IDs dos produtos
+            $stores = array_unique(array_column($cartItems, 'store_id'));
+
             $creditCardPayment = new CreditCard($cartItems, $user, $dataPost, $reference);
 
             $result = $creditCardPayment->doPayment();
@@ -76,6 +79,7 @@ class CheckoutController extends Controller
 
             $userOrder->stores()->sync($stores);
 
+            // Remove as chaves da sessão
             session()->forget('cart');
             session()->forget('pagseguro_session_code');
 

@@ -36,7 +36,7 @@ class CartController extends Controller
             return redirect()->route('product.single', ['slug' => $produtoData['slug']]);
         
         // Faz um merge dos dados que vieram da request com os dados do banco
-        $produto = array_merge($produtoData, $produto->first(['name', 'price'])->toArray());
+        $produto = array_merge($produtoData, $produto->first(['name', 'price', 'store_id'])->toArray());
 
 
         // verificar se existe sessão para os produtos

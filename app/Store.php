@@ -80,7 +80,7 @@ Caso da tabela esteja com o nome diferente o ideal é usar a propriedate protect
 
     public function orders()
     {
-        return $this->hasMany(UserOrder::class); // Store tem muitas orders
+        return $this->hasMany(UserOrder::class, 'order_store'); // Store tem muitas orders
     }
 }
 
