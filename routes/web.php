@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\Admin\ProductPhotoController;
@@ -271,6 +273,8 @@ Route::group(['middleware' => ['auth']], function(){
 
 
         Route::post('photos/remove', [ProductPhotoController::class, 'removerPhoto'])->name('photo.remove');
+
+        Route::get('orders/my', [OrdersController::class, 'index'])->name('orders/my');
 
     });
 });

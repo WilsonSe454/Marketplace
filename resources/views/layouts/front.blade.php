@@ -36,7 +36,7 @@
             @endforeach
         </ul>
 
-        @auth
+       {{--  @auth
            <div class="navbar-nav mr-auto">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item @if(request()->is('admin/stores*')) active @endif">
@@ -50,7 +50,7 @@
                     </li>
                 </ul>
            </div>
-        @endauth
+        @endauth --}}
         <div>
             <ul class="navbar-nav mr-auto">
                 <li>
@@ -71,7 +71,8 @@
             <div class="my-2 my-lg-0">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <span class="nav-link">{{auth()->user()->name}}</span>
+                        {{-- <span class="nav-link">{{auth()->user()->name}}</span> --}}
+                        <a class="nav-link" href="{{route('admin.products.index')}}">{{auth()->user()->name}}</a>
                     </li>
                     <li class="nav-item">
                         <!-- use o event.preventDefault(); para evitar o comportamento padrão do link -->

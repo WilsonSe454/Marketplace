@@ -80,7 +80,8 @@ Caso da tabela esteja com o nome diferente o ideal é usar a propriedate protect
 
     public function orders()
     {
-        return $this->hasMany(UserOrder::class, 'order_store'); // Store tem muitas orders
+        // return $this->belongsToMany(UserOrder::class, 'order_store', 'store_id', 'order_id'); // O laravel vai pegar o nome da table e concatenar o id. Por isso você pode passar o valor como null
+        return $this->belongsToMany(UserOrder::class, 'order_store', null, 'order_id'); 
     }
 }
 

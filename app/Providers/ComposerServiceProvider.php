@@ -51,6 +51,6 @@ class ComposerServiceProvider extends ServiceProvider
         // $ php artisan make:provider ComposerServiceProvider. 
         // tem que Registrar o provider ComposerServiceProvider em app.php que fica na pasta config
 
-        view()->composer('*', 'App\Http\Views\CategoryViewComposer@compose');
+        view()->composer('layouts.front', 'App\Http\Views\CategoryViewComposer@compose');
     }
 }
